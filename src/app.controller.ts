@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { GithubService } from './services/github.service';
 
 
@@ -6,8 +6,11 @@ import { GithubService } from './services/github.service';
 export class AppController {
   constructor(private readonly githubService: GithubService) {}
 
-  @Get('/getPullRequests')
-  getRepoMetadata() {
-    return this.githubService.getRepoMetadata() 
+  @Get('/getPullRequests/:username/:repository')
+  getRepoMetadata(
+    @Param('username') username, 
+    @Param('repository') repository
+  ) {
+    return this.githubService.getRepoMetadata(username, repository) 
   }
 }
