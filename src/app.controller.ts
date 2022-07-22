@@ -6,7 +6,7 @@ import { GithubService } from './services/github.service';
 export class AppController {
   constructor(private readonly githubService: GithubService) {}
 
-  @Get('/git_pr_data')
+  @Get('/getPullRequests')
   getRepoMetadata() {
     return this.githubService.getRepoMetadata() 
   }

@@ -4,7 +4,7 @@ interface PullRequestMetadata {
     number: number;
     title: string;
     base: Base;
-    commits: any;
+    commit_count: any;
     message?: any;
     payload?: any;
     sha?: any;

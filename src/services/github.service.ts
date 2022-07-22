@@ -20,18 +20,18 @@ export class GithubService {
     };
   }
 
-  async getRepoMetadata() {
-    let resolvedPullRequests = await this.getGithubData()
+  async getRepoMetadata(): Promise<PullRequestMetadata[]> {
+    let resolvedPullRequests = await this.getGithubData();
 
-    resolvedPullRequests = resolvedPullRequests
-      .map(pr => Object.assign({}, pr, {commits: pr.commits['data'].length}))
+    let mappedPullRequests = resolvedPullRequests
+      .map(pr => Object.assign({}, pr, {commit_count: pr.commit_count['data'].length}))
 
-    return resolvedPullRequests
+    return mappedPullRequests
   }
 
   private async getGithubData(): Promise<PullRequestMetadata[]> {
     const githubData = await this.httpService.axiosRef
-      .get(`${this.GITHUB_API_ENDPOINT}/repos/${this.USERNAME}/${this.REPOSITORY}/pulls`, this.config)
+      .get(`${this.GITHUB_API_ENDPOINT}/repos/${this.USERNAME}/${this.REPOSITORY}/pulls?state=open`, this.config)
 
     this.prList = githubData?.data.map(async (pr: PullRequestMetadata) => { 
       /* set timeout to avoid rate limit blocks */
@@ -41,16 +41,16 @@ export class GithubService {
         title: pr.title,
         author: pr.base.user.login,
         number: pr.number,
-        commits: await this.getCommitData(pr.number)
+        commit_count: await this.getCommitData(pr.number)
       }
     });
 
     return Promise.all(this.prList)
   } 
 
-  private async getCommitData(prIdentifier: number) {
+  private async getCommitData(pullRequestId: number) {
     return await this.httpService.axiosRef
-      .get(`${this.GITHUB_API_ENDPOINT}/repos/${this.USERNAME}/${this.REPOSITORY}/pulls/${prIdentifier}/commits`, this.config);
+      .get(`${this.GITHUB_API_ENDPOINT}/repos/${this.USERNAME}/${this.REPOSITORY}/pulls/${pullRequestId}/commits`, this.config);
   }
 
 }
