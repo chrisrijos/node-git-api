@@ -1,8 +1,8 @@
 import { HttpService } from '@nestjs/axios';
 import { TestingModule, Test } from '@nestjs/testing';
 import axios from 'axios';
-import { AppController } from '../app.controller';
-import { GithubService } from '../services/github.service';
+import { AppController } from './app.controller';
+import { GithubService } from './services/github.service';
 
 jest.mock('@nestjs/axios')
 jest.mock('../services/github.service')

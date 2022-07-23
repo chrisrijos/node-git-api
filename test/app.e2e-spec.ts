@@ -15,10 +15,9 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/getPullRequests (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get(`/getPullRequests/${process.env.USERNAME}/${process.env.REPOSITORY}`)
       .expect(200)
-      .expect('Hello World!');
   });
 });
