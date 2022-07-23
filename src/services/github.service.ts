@@ -20,6 +20,11 @@ export class GithubService {
     };
   }
 
+  /** 
+   * Returns Github Pull Request Payload
+   * @Param {username} *github profile username {required}
+   * @Param {repository} *github repository name {required}
+  */
   async getRepoMetadata(username: string, repository: string): Promise<PullRequestMetadata[]> {
     const resolvedPullRequests = await this.getGithubData(username, repository);
 
@@ -29,7 +34,11 @@ export class GithubService {
     return mappedPullRequests;
   }
 
-  /* Retrieves open PR's for a given username/repository */
+  /** 
+   * Retrieves open PR's for a given username/repository as params 
+   * @Param {username} *github profile username {required}
+   * @Param {repository} *github repository name {required}
+  */
   private async getGithubData(username: string, repository: string): Promise<PullRequestMetadata[]> {
     /* Query by State for open Pr's explicitly labeled challenge instructions */
     const githubData = await this.httpService.axiosRef
@@ -50,6 +59,12 @@ export class GithubService {
     return Promise.all(this.prList)
   } 
 
+  /** 
+   * Retrieves data for commits included in a PR
+   * @Param {pullRequestId} pullRequestId - pull request NUMBER property aka ID
+   * @Param {username} username - profile username {required}
+   * @Param {repository} repository - repository name {required}
+  */
   private async getCommitData(pullRequestId: number, username: string, repository: string) {
     return await this.httpService.axiosRef
       .get(`${this.GITHUB_API_ENDPOINT}/repos/${username}/${repository}/pulls/${pullRequestId}/commits`, this.config);
