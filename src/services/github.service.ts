@@ -21,14 +21,15 @@ export class GithubService {
   }
 
   async getRepoMetadata(username: string, repository: string): Promise<PullRequestMetadata[]> {
-    let resolvedPullRequests = await this.getGithubData(username, repository);
+    const resolvedPullRequests = await this.getGithubData(username, repository);
 
-    let mappedPullRequests = resolvedPullRequests
+    const mappedPullRequests = resolvedPullRequests
       .map(pr => Object.assign({}, pr, {commit_count: pr.commit_count['data'].length}));
 
     return mappedPullRequests;
   }
 
+  /* Retrieves open PR's for a given username/repository */
   private async getGithubData(username: string, repository: string): Promise<PullRequestMetadata[]> {
     /* Query by State for open Pr's explicitly labeled challenge instructions */
     const githubData = await this.httpService.axiosRef

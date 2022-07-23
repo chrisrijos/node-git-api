@@ -1,14 +1,13 @@
 import { HttpService } from '@nestjs/axios';
-jest.mock('@nestjs/axios')
-
 import { TestingModule, Test } from '@nestjs/testing';
-import { equal } from 'assert';
 import axios from 'axios';
-import { assert } from 'console';
 import { AppController } from '../app.controller';
 import { GithubService } from '../services/github.service';
+
+jest.mock('@nestjs/axios')
 jest.mock('../services/github.service')
 
+/*Basic mocks Tests/Mocks for challenge */
 describe('AppController', () => {
   let appController: AppController;
 
